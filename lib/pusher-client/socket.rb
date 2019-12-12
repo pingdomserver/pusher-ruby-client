@@ -197,7 +197,8 @@ module PusherClient
       @connection = PusherWebSocket.new(@url, {
         :ssl => @encrypted,
         :cert_file => @cert_file,
-        :ssl_verify => @ssl_verify
+        :ssl_verify => @ssl_verify,
+        :proxy => @proxy
       })
 
       logger.debug("Websocket connected")

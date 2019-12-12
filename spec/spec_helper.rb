@@ -1,6 +1,7 @@
 $:.unshift File.expand_path('../lib', __FILE__)
 
 require 'pusher-client'
+require 'pusher-client/proxy'
 
 require 'logger'
 

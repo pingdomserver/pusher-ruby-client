@@ -13,8 +13,12 @@ module PusherClient
 
     def initialize(url, params = {})
       @hs ||= WebSocket::Handshake::Client.new(:url => url)
+      @socket = if (proxy = params[:proxy])
+        ProxySocket.connect(origin, proxy)
+      else
+        TCPSocket.new(@hs.host, @hs.port || 80)
+      end
       @frame ||= WebSocket::Frame::Incoming::Server.new(:version => @hs.version)
-      @socket = TCPSocket.new(@hs.host, @hs.port || 80)
       @cert_file = params[:cert_file]
       @logger = params[:logger] || PusherClient.logger
 

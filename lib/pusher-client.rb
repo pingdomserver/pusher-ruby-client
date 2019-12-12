@@ -17,6 +17,7 @@ end
 
 require 'pusher-client/version'
 require 'pusher-client/websocket'
+require 'pusher-client/proxy_socket'
 require 'pusher-client/socket'
 require 'pusher-client/channel'
 require 'pusher-client/channels'
