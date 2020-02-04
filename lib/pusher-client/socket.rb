@@ -43,6 +43,10 @@ module PusherClient
         end
         TCPSocket::socks_server = uri.host
         TCPSocket::socks_port = uri.port
+        if uri.user || uri.password
+          TCPSocket::socks_username = uri.user
+          TCPSocket::socks_password = uri.password
+        end
       end
 
       if @encrypted
