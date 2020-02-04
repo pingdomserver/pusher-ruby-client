@@ -33,7 +33,7 @@ module PusherClient
       @ssl_verify = options.fetch(:ssl_verify, true)
       http_proxy = options[:http_proxy]
       https_proxy = options[:https_proxy]
-      if http_proxy != "" || https_proxy != ""
+      if (http_proxy && http_proxy != "") || (https_proxy && https_proxy != "")
         require 'socksify'
         uri = nil
         if http_proxy != ""
@@ -43,6 +43,10 @@ module PusherClient
         end
         TCPSocket::socks_server = uri.host
         TCPSocket::socks_port = uri.port
+        if uri.user || uri.password
+          TCPSocket::socks_username = uri.user
+          TCPSocket::socks_password = uri.password
+        end
       end
 
       if @encrypted
