@@ -1,3 +1,4 @@
+require 'uri'
 require 'json'
 require 'openssl'
 require 'digest/md5'
@@ -30,6 +31,23 @@ module PusherClient
       @ws_port = options[:ws_port] || WS_PORT
       @wss_port = options[:wss_port] || WSS_PORT
       @ssl_verify = options.fetch(:ssl_verify, true)
+      http_proxy = options[:http_proxy]
+      https_proxy = options[:https_proxy]
+      if (http_proxy && http_proxy != "") || (https_proxy && https_proxy != "")
+        require 'socksify'
+        uri = nil
+        if http_proxy != ""
+          uri = URI.parse(http_proxy)
+        else
+          uri = URI.parse(https_proxy)
+        end
+        TCPSocket::socks_server = uri.host
+        TCPSocket::socks_port = uri.port
+        if uri.user || uri.password
+          TCPSocket::socks_username = uri.user
+          TCPSocket::socks_password = uri.password
+        end
+      end
 
       if @encrypted
         @url = "wss://#{@ws_host}:#{@wss_port}#{@path}"
